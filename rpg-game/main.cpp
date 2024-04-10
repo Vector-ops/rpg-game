@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 int main()
 {
@@ -7,26 +8,30 @@ int main()
     settings.antialiasingLevel = 8;
     sf::RenderWindow window(sf::VideoMode(800, 600), "RPG Game", sf::Style::Default, settings);
 
-    sf::CircleShape shape(50.0f);
-    shape.setFillColor(sf::Color::Red);
-    shape.setPosition(sf::Vector2f(100, 100));
-    shape.setOutlineThickness(10);
-    shape.setOutlineColor(sf::Color::Blue);
-
-    sf::RectangleShape rect(sf::Vector2f(50.f, 100.f));
-    rect.setFillColor(sf::Color::Green);
-    rect.setPosition(sf::Vector2f(200.f, 200.f));
-    rect.setOrigin(rect.getSize() / 2.f);
-    rect.setRotation(45.f);
-
-    sf::CircleShape poly(50.f, 10);
-
-
     // ------------------------------------------------INITIALIZE--------------------------------------------
+    // ------------------------------------------------LOAD--------------------------------------------
+    sf::Texture playerTexture;
+    sf::Sprite playerSprite;
+
+    if (playerTexture.loadFromFile("Assets/Player/Textures/sprite-sheet.png"))
+    {
+        int XIndex = 0;
+        int YIndex = 0;
+
+        std::cout << "Player image loaded" << std::endl;
+        playerSprite.setTexture(playerTexture);
+        playerSprite.setTextureRect(sf::IntRect(XIndex * 64, YIndex * 64, 64, 64));
+        playerSprite.scale(sf::Vector2f(3, 3));
+    }
+    else {
+        std::cout << "Player image failed to load" << std::endl;
+    }
+
+    // ------------------------------------------------LOAD--------------------------------------------
 
     while (window.isOpen())
     {
-        //-------------------------------------------Update--------------------------------------------
+        //-------------------------------------------UPDATE--------------------------------------------
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -35,14 +40,25 @@ int main()
                 window.close();
             }
         }
-        //-------------------------------------------Update--------------------------------------------
-        //-------------------------------------------Draw--------------------------------------------
+
+            sf::Vector2f position = playerSprite.getPosition();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) 
+            playerSprite.setPosition(position + sf::Vector2f(1, 0));
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) 
+            playerSprite.setPosition(position + sf::Vector2f(-1, 0));
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) 
+            playerSprite.setPosition(position + sf::Vector2f(0, -1));
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) 
+            playerSprite.setPosition(position + sf::Vector2f(0, 1));
+        
+
+
+        //-------------------------------------------UPDATE--------------------------------------------
+        //-------------------------------------------DRAW--------------------------------------------
         window.clear(sf::Color::Black);
-        window.draw(shape);
-        window.draw(rect);
-        window.draw(poly);
+        window.draw(playerSprite);
         window.display();
-        //-------------------------------------------Draw--------------------------------------------
+        //-------------------------------------------DRAW--------------------------------------------
     }
 
     return 0;
