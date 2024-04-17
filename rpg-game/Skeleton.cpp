@@ -3,6 +3,13 @@
 
 void Skeleton::Initialize()
 {
+    boundingBox.setOutlineColor(sf::Color::Red);
+    boundingBox.setFillColor(sf::Color::Transparent);
+    boundingBox.setOutlineThickness(1.0);
+
+    sprite.scale(sf::Vector2f(3, 3));
+    size = sf::Vector2i(64, 64);
+    boundingBox.setSize(sf::Vector2f(size.x * sprite.getScale().x, size.y * sprite.getScale().y));
 }
 
 void Skeleton::Load()
@@ -15,19 +22,20 @@ void Skeleton::Load()
 
 
         std::cout << "Enemy texture loaded" << std::endl;
-        sprite.setTextureRect(sf::IntRect(XIndex * 64, YIndex * 64, 64, 64));
-        sprite.scale(sf::Vector2f(3, 3));
+        sprite.setTextureRect(sf::IntRect(XIndex * size.x, YIndex * size.y, size.x, size.y));
     }
     else {
         std::cout << "Enemy texture failed to load" << std::endl;
     }
 }
 
-void Skeleton::Update()
+void Skeleton::Update(float deltaTime)
 {
+    boundingBox.setPosition(sprite.getPosition());
 }
 
 void Skeleton::Draw(sf::RenderWindow &window)
 {
     window.draw(sprite);
+    window.draw(boundingBox);
 }
