@@ -2,6 +2,7 @@
 
 #include "Player.h"
 #include "Skeleton.h"
+#include "FrameRate.h"
 #include <iostream>
 
 
@@ -14,12 +15,18 @@ int main()
     sf::RenderWindow window(sf::VideoMode(1200, 800), "RPG Game", sf::Style::Default, settings);
     window.setVerticalSyncEnabled(true);
 
+    FrameRate frameRate;
     Player player;
     Skeleton skeleton;
+    
 
+    frameRate.Initialize();
     player.Initialize();
     skeleton.Initialize();
 
+
+    
+    frameRate.Load();
     player.Load();
     skeleton.Load();
 
@@ -32,8 +39,8 @@ int main()
 
         // delta time
         sf::Time deltaTimeTimer = clock.restart();
-        float deltaTime = deltaTimeTimer.asMilliseconds();
-
+        double deltaTime = deltaTimeTimer.asMicroseconds() / 1000.0;
+       
 
         //-------------------------------------------UPDATE--------------------------------------------
         sf::Event event;
@@ -46,7 +53,7 @@ int main()
             }
         }
 
-
+        frameRate.Update(deltaTime);
         player.Update(skeleton, deltaTime);
         skeleton.Update(deltaTime);
 
@@ -54,8 +61,7 @@ int main()
         window.clear(sf::Color::Black);
         player.Draw(window);
         skeleton.Draw(window);
-        window.draw(player.sprite);
-        window.draw(skeleton.sprite);
+        frameRate.Draw(window);
         
         window.display();
         

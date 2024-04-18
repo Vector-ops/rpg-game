@@ -1,12 +1,20 @@
 #include "Skeleton.h"
 #include <iostream>
 
+Skeleton::Skeleton()
+{
+}
+
+Skeleton::~Skeleton()
+{
+}
+
 void Skeleton::Initialize()
 {
     boundingBox.setOutlineColor(sf::Color::Red);
     boundingBox.setFillColor(sf::Color::Transparent);
     boundingBox.setOutlineThickness(1.0);
-
+    
     sprite.scale(sf::Vector2f(3, 3));
     size = sf::Vector2i(64, 64);
     boundingBox.setSize(sf::Vector2f(size.x * sprite.getScale().x, size.y * sprite.getScale().y));

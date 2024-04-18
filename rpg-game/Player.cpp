@@ -2,6 +2,15 @@
 #include "Math.h"
 #include <iostream>
 
+Player::Player() :
+    bulletSpeed(0.5f),
+    playerSpeed(1.0f)
+{
+}
+
+Player::~Player()
+{
+}
 
 void Player::Initialize()
 {
@@ -30,6 +39,10 @@ void Player::Load()
     else {
         std::cout << "Player image failed to load" << std::endl;
     }
+}
+
+Player::Player()
+{
 }
 
 void Player::Update(Skeleton &skeleton, float deltaTime)
