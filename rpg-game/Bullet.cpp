@@ -2,7 +2,7 @@
 #include "Math.h"
 
 Bullet::Bullet():
-	speed(0)
+	m_speed(0)
 {
 }
 

@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 
+#include "Map.h"
 #include "Player.h"
 #include "Skeleton.h"
 #include "FrameRate.h"
@@ -15,17 +16,19 @@ int main()
     sf::RenderWindow window(sf::VideoMode(1200, 800), "RPG Game", sf::Style::Default, settings);
     window.setVerticalSyncEnabled(true);
 
+    Map map;
     FrameRate frameRate;
     Player player;
     Skeleton skeleton;
     
 
+    map.Initialize();
     frameRate.Initialize();
     player.Initialize();
     skeleton.Initialize();
 
 
-    
+    map.Load();
     frameRate.Load();
     player.Load();
     skeleton.Load();
@@ -54,12 +57,14 @@ int main()
         }
 
         sf::Vector2f mousePosition = sf::Vector2f(sf::Mouse::getPosition(window));
+        map.Update(deltaTime);
         frameRate.Update(deltaTime);
         player.Update(skeleton, deltaTime, mousePosition);
         skeleton.Update(deltaTime);
 
         //-------------------------------------------DRAW--------------------------------------------
         window.clear(sf::Color::Black);
+        map.Draw(window);
         player.Draw(window);
         skeleton.Draw(window);
         frameRate.Draw(window);
