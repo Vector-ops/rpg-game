@@ -22,9 +22,9 @@ void Bullet::Load()
 {
 }
 
-void Bullet::Update(float deltaTime)
+void Bullet::Update(double deltaTime)
 {
-	rectangleShape.setPosition(rectangleShape.getPosition() + direction * m_speed * deltaTime);
+	rectangleShape.setPosition(rectangleShape.getPosition() + direction * m_speed * (float)deltaTime);
 }
 
 void Bullet::Draw(sf::RenderWindow& window)

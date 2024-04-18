@@ -1,17 +1,24 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Tile.h"
 
 class Map
 {
 private:
 	sf::Texture texture;
-	sf::Sprite sprites[10];	
+	Tile *tiles;
 
+	int totalTiles;
 	int tileWidth;
 	int tileHeight;
 	int totalTilesOnX;
 	int totalTilesonY;
 
+	int mapNumbers[6] = {
+		1, 1, 1, 25, 27, 30
+	};
+
+	sf::Sprite mapSprites[6];
 
 public:
 	Map();
@@ -19,7 +26,7 @@ public:
 
 	void Initialize();
 	void Load();
-	void Update(float deltaTime);
+	void Update(double deltaTime);
 	void Draw(sf::RenderWindow& window);
 };
 

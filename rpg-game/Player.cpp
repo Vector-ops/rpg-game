@@ -42,18 +42,18 @@ void Player::Load()
     }
 }
 
-void Player::Update(Skeleton& skeleton, float deltaTime, sf::Vector2f &mousePosition)
+void Player::Update(Skeleton& skeleton, double deltaTime, sf::Vector2f &mousePosition)
 {
 
     sf::Vector2f position = sprite.getPosition();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        sprite.setPosition(position + sf::Vector2f(1, 0) * playerSpeed  * deltaTime);
+        sprite.setPosition(position + sf::Vector2f(1, 0) * playerSpeed  * (float)deltaTime);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        sprite.setPosition(position + sf::Vector2f(-1, 0) * playerSpeed * deltaTime);
+        sprite.setPosition(position + sf::Vector2f(-1, 0) * playerSpeed * (float)deltaTime);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        sprite.setPosition(position + sf::Vector2f(0, -1) * playerSpeed * deltaTime);
+        sprite.setPosition(position + sf::Vector2f(0, -1) * playerSpeed * (float)deltaTime);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        sprite.setPosition(position + sf::Vector2f(0, 1) * playerSpeed * deltaTime);
+        sprite.setPosition(position + sf::Vector2f(0, 1) * playerSpeed * (float)deltaTime);
 
     // bullet
 
