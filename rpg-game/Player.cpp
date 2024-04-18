@@ -3,8 +3,9 @@
 #include <iostream>
 
 Player::Player() :
-    bulletSpeed(0.5f),
-    playerSpeed(1.0f)
+    playerSpeed(1.0f),
+    maxFireRate(100),
+    fireRateTimer(0)
 {
 }
 
@@ -41,11 +42,7 @@ void Player::Load()
     }
 }
 
-Player::Player()
-{
-}
-
-void Player::Update(Skeleton &skeleton, float deltaTime)
+void Player::Update(Skeleton& skeleton, float deltaTime, sf::Vector2f &mousePosition)
 {
 
     sf::Vector2f position = sprite.getPosition();
@@ -58,20 +55,30 @@ void Player::Update(Skeleton &skeleton, float deltaTime)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         sprite.setPosition(position + sf::Vector2f(0, 1) * playerSpeed * deltaTime);
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
-        bullets.push_back(sf::RectangleShape(sf::Vector2f(30, 10)));
+    // bullet
+
+    fireRateTimer += deltaTime;
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && fireRateTimer >= maxFireRate) {
+        bullets.push_back(Bullet());
         int i = bullets.size() - 1;
-        bullets[i].setPosition(sprite.getPosition());
+        bullets[i].Initialize(sprite.getPosition(), mousePosition, 0.5f);
+        fireRateTimer = 0;
     }
 
     for (size_t i = 0; i < bullets.size(); i++)
     {
-        sf::Vector2f bulletDirection = skeleton.sprite.getPosition() - bullets[i].getPosition();
-        bulletDirection = Math::NormalizeVector(bulletDirection);
-        bullets[i].setPosition(bullets[i].getPosition() + bulletDirection * bulletSpeed * deltaTime);
+        bullets[i].Update(deltaTime);
+        
+        if (skeleton.health > 0){
+        if (Math::CheckRectCollision(bullets[i].GetGlobalBounds(), skeleton.sprite.getGlobalBounds())) {
+            skeleton.ChangeHealth(-10);
+            bullets.erase(bullets.begin() + i);
+        }
+        }
     }
 
     boundingBox.setPosition(sprite.getPosition());
+
 
 }
 
@@ -81,7 +88,7 @@ void Player::Draw(sf::RenderWindow &window)
     window.draw(boundingBox);
     for (size_t i = 0; i < bullets.size(); i++)
     {
-        window.draw(bullets[i]);
+        bullets[i].Draw(window);
     }
 
 }
